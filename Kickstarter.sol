@@ -1,22 +1,25 @@
 // SPDX-License-Identifier: GPL-3.0
-
 pragma solidity ^0.8.18;
 
 contract Campaign {
     address public manager;
     uint256 public minimumContribution;
-    address[] public approvers;
+    address[] private approvers;
 
-    constructor(uint256 minAmount) {
+    constructor(uint256 _minimumContribution) {
         manager = msg.sender;
-        minimumContribution = minAmount;
+        minimumContribution = _minimumContribution;
     }
 
     function contribute() public payable {
         require(
-            msg.value > minimumContribution,
-            "Amount trying to send is less than minimum contribution for Campaign."
+            msg.value >= minimumContribution,
+            "Not enough wei sent to meet the minimum contribution requirement."
         );
         approvers.push(msg.sender);
+    }
+
+    function getApprovers() public view returns (address[] memory) {
+        return approvers;
     }
 }
