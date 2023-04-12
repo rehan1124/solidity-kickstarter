@@ -19,16 +19,10 @@ contract Campaign {
         minimumContribution = _minimumContribution;
     }
 
-    // --- MODIFIERS ---
-
     modifier restricted() {
-        require(msg.sender == manager);
+        require(msg.sender == manager, "Only the manager can execute this function.");
         _;
     }
-
-    // --- PRIVATE ---
-
-    // --- PUBLIC ---
 
     function contribute() public payable {
         require(
