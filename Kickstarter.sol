@@ -2,6 +2,13 @@
 pragma solidity ^0.8.18;
 
 contract Campaign {
+    struct Request {
+        string description;
+        uint value;
+        address recipient;
+        bool complete;
+    }
+
     address public manager;
     uint256 public minimumContribution;
     address[] private approvers;
@@ -21,5 +28,9 @@ contract Campaign {
 
     function getApprovers() public view returns (address[] memory) {
         return approvers;
+    }
+
+    function getTotalBalance() public view returns (uint256) {
+        return address(this).balance;
     }
 }
