@@ -20,7 +20,10 @@ contract Campaign {
     }
 
     modifier restricted() {
-        require(msg.sender == manager, "Only the manager can execute this function.");
+        require(
+            msg.sender == manager,
+            "Only the manager can execute this function."
+        );
         _;
     }
 
