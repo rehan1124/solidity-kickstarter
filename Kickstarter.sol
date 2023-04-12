@@ -45,4 +45,18 @@ contract Campaign {
     function getTotalBalance() public view returns (uint256) {
         return address(this).balance;
     }
+
+    function createRequest(
+        string memory _description,
+        uint256 _value,
+        address _recipient
+    ) public restricted {
+        Request memory newRequest = Request({
+            description: _description,
+            value: _value,
+            recipient: _recipient,
+            complete: false
+        });
+        requests.push(newRequest);
+    }
 }
