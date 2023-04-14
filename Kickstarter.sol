@@ -32,7 +32,6 @@ contract Campaign {
             msg.value >= minimumContribution,
             "Not enough wei sent to meet the minimum contribution requirement."
         );
-        // approvers.push(msg.sender);
         approvers[msg.sender] = true;
     }
 
