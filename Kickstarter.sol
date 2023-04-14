@@ -7,9 +7,13 @@ contract Campaign {
         uint256 value;
         address recipient;
         bool complete;
+        uint256 approvalCount;
+        mapping(address => bool) approvals;
     }
 
-    Request[] public requests;
+    uint256 _numRequest;
+    mapping(uint256 => Request) requests;
+
     address public manager;
     uint256 public minimumContribution;
     mapping(address => bool) public approvers;
@@ -44,12 +48,18 @@ contract Campaign {
         uint256 _value,
         address _recipient
     ) public restricted {
-        Request memory newRequest = Request({
-            description: _description,
-            value: _value,
-            recipient: _recipient,
-            complete: false
-        });
-        requests.push(newRequest);
+        Request storage r = requests[_numRequest++];
+        r.description = _description;
+        r.value = _value;
+        r.recipient = _recipient;
+        r.complete = false;
+        r.approvalCount = 0;
+    }
+
+    function approveRequest(uint256 _index) public {
+        require(approvers[msg.sender]);
+        require(!requests[_index].approvals[msg.sender]);
+        requests[_index].approvals[msg.sender] = true;
+        requests[_index].approvalCount++;
     }
 }
