@@ -13,10 +13,10 @@ contract Campaign {
 
     uint256 public _numRequest;
     mapping(uint256 => Request) public requests;
-
     address public manager;
     uint256 public minimumContribution;
     mapping(address => bool) public approvers;
+    uint256 public peopleJoinedForContribution;
 
     constructor(uint256 _minimumContribution) {
         manager = msg.sender;
@@ -37,6 +37,7 @@ contract Campaign {
             "Not enough wei sent to meet the minimum contribution requirement."
         );
         approvers[msg.sender] = true;
+        peopleJoinedForContribution++;
     }
 
     function getTotalBalance() public view returns (uint256) {
@@ -67,5 +68,17 @@ contract Campaign {
         );
         requests[_index].approvals[msg.sender] = true;
         requests[_index].approvalCount++;
+    }
+
+    function finalizeRequest(uint256 _index) public payable restricted {
+        Request storage r = requests[_index];
+        require(
+            r.approvalCount > (peopleJoinedForContribution / 2),
+            "You do not have required number of approvals."
+        );
+        require(!r.complete, "Request has been approved already.");
+
+        payable(r.recipient).transfer(r.value);
+        r.complete = true;
     }
 }
