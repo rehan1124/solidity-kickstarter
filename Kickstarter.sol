@@ -36,8 +36,10 @@ contract Campaign {
             msg.value >= minimumContribution,
             "Not enough wei sent to meet the minimum contribution requirement."
         );
+        if (!approvers[msg.sender]) {
+            peopleJoinedForContribution++;
+        }
         approvers[msg.sender] = true;
-        peopleJoinedForContribution++;
     }
 
     function getTotalBalance() public view returns (uint256) {
