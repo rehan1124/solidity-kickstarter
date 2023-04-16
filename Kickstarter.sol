@@ -11,8 +11,8 @@ contract Campaign {
         mapping(address => bool) approvals;
     }
 
-    uint256 _numRequest;
-    mapping(uint256 => Request) requests;
+    uint256 public _numRequest;
+    mapping(uint256 => Request) public requests;
 
     address public manager;
     uint256 public minimumContribution;
@@ -57,8 +57,14 @@ contract Campaign {
     }
 
     function approveRequest(uint256 _index) public {
-        require(approvers[msg.sender], "Account is not participating in Campaign.");
-        require(!requests[_index].approvals[msg.sender], "User cannot approve same request twice.");
+        require(
+            approvers[msg.sender],
+            "Account is not participating in Campaign."
+        );
+        require(
+            !requests[_index].approvals[msg.sender],
+            "User cannot approve same request twice."
+        );
         requests[_index].approvals[msg.sender] = true;
         requests[_index].approvalCount++;
     }
