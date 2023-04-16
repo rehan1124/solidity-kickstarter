@@ -18,8 +18,8 @@ contract Campaign {
     mapping(address => bool) public approvers;
     uint256 public peopleJoinedForContribution;
 
-    constructor(uint256 _minimumContribution) {
-        manager = msg.sender;
+    constructor(uint256 _minimumContribution, address _creator) {
+        manager = _creator;
         minimumContribution = _minimumContribution;
     }
 
