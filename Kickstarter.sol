@@ -57,8 +57,8 @@ contract Campaign {
     }
 
     function approveRequest(uint256 _index) public {
-        require(approvers[msg.sender]);
-        require(!requests[_index].approvals[msg.sender]);
+        require(approvers[msg.sender], "Account is not participating in Campaign.");
+        require(!requests[_index].approvals[msg.sender], "User cannot approve same request twice.");
         requests[_index].approvals[msg.sender] = true;
         requests[_index].approvalCount++;
     }
